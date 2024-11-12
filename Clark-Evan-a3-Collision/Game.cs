@@ -31,7 +31,8 @@ namespace Game10003
             bob.bodyColor = purple;
             bob.eyeMouthColor = Color.Black;
             bob.speed = 500;
-            bob.jumpHeight = 100;
+            bob.jumpHeight.X = 0;
+            bob.jumpHeight.Y = 8;
 
             //Platform's variables
             floor.position.X = 0;
@@ -53,8 +54,8 @@ namespace Game10003
             bob.DrawBob();
             bob.BobsGravity();
             //Platform's functions
-            //floor.DrawPlatforms();
-            //collision();
+            floor.DrawPlatforms();
+            collision();
 
         }
 
@@ -64,6 +65,7 @@ namespace Game10003
             if (isCollidingY)
             {
                 bob.position.Y = bob.lastPosition.Y;
+                bob.velocity.Y = 0;
             }
             bool isCollidingX = (bob.position.X + bob.size <= floor.position.X);
             if (isCollidingX)

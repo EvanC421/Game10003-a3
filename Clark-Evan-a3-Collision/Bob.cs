@@ -18,8 +18,8 @@ namespace Clark_Evan_a3_Collision
         public float speed;
         //Gravity
         public Vector2 velocity;
-        public Vector2 gravity = new Vector2(0, +10);
-        public float jumpHeight;
+        public Vector2 gravity = new Vector2(0, +15);
+        public Vector2 jumpHeight;
         public Vector2 gravityForce;
 
 
@@ -61,16 +61,19 @@ namespace Clark_Evan_a3_Collision
                 position.X = Window.Width - size;
             }
             //player jumps (spacebar)
-            if (Input.IsKeyboardKeyDown (KeyboardInput.Space))
-            {
-                position.Y = position.Y - 50;
+            //Only go up if Bob has zero verticle velocity, AKA when he's touching the ground
+            if (velocity.Y == 0) {
+                if (Input.IsKeyboardKeyDown(KeyboardInput.Space))
+                {
+                    velocity = velocity - jumpHeight;
+                }
+                //constrain to top of screen
+                if (position.Y - size < 0)
+                {
+                    velocity += jumpHeight;
+                    position.Y = 50;
+                }
             }
-            //constrain to top of screen
-            if (position.Y < 50)
-            {
-                position.Y -= 75;
-            }
-           
         }
 
         public void BobsGravity()
@@ -83,6 +86,7 @@ namespace Clark_Evan_a3_Collision
             if (position.Y > 550)
             {
                 position.Y = 550;
+                velocity.Y = 0;
             }
         }
     }
