@@ -10,13 +10,24 @@ namespace Game10003
         public Color projectileColor;
         public float size;
         public float speed;
+        public float startingPosition;
+        public float despawnPosition;
 
         public void drawProjectiles()
         {
-            int[] yOffset = [500, 400, 300, 200];
-            position.Y = Random.Integer(0, yOffset.Length);
             Draw.FillColor = projectileColor;
-            Draw.Circle(position.X, position.Y, size);
+            Draw.Circle(position, size);
+            if (position.X < despawnPosition)
+            {
+                position.X += speed * Time.DeltaTime;
+            }
+            else if (position.X >= despawnPosition)
+            {
+                position.X = startingPosition;
+                position.Y = Random.Integer(200, 500);
+            }
+ 
+
         }
     }
 }

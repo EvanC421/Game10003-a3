@@ -2,6 +2,8 @@
 using Clark_Evan_a3_Collision;
 using System;
 using System.Numerics;
+using System.Runtime.InteropServices.Marshalling;
+using System.Threading.Tasks.Sources;
 
 // The namespace your code is in.
 namespace Game10003
@@ -16,6 +18,9 @@ namespace Game10003
         Platform floor = new Platform();
         Platform platform = new Platform();
         Projectile projectile = new Projectile();
+        Projectile coin = new Projectile();
+
+        int score = 0;
 
         Color purple = new Color(177, 156, 217);
         /// <summary>
@@ -35,6 +40,8 @@ namespace Game10003
             bob.speed = 500;
             bob.jumpHeight.X = 0;
             bob.jumpHeight.Y = 12;
+            bob.lastPosition.X = 0;
+            bob.lastPosition.Y = 0;
 
             //The floor's variables
             floor.position.X = 0;
@@ -49,7 +56,7 @@ namespace Game10003
             floor.bottomEdge = 0;
             floor.topEdge = 0;
 
-            //The floating platform's variables
+            //The floating platform's variables (unused)
             platform.position.X = 50;
             platform.position.Y = 350;
             platform.numberOfPlatforms = 3;
@@ -64,10 +71,19 @@ namespace Game10003
 
             //Projectile's variables
             projectile.position.X = 0;
-            projectile.position.Y = 0;
+            projectile.position.Y = Random.Integer(200, 500);
             projectile.size = 30;
-            projectile.speed = 10;
+            projectile.speed = 600;
             projectile.projectileColor = Color.Red;
+            projectile.despawnPosition = 800;
+            //Coin's variables
+            coin.position.X = 0;
+            coin.position.Y = Random.Integer(200, 500);
+            coin.size = 30;
+            coin.speed = 600;
+            coin.projectileColor = Color.Yellow;
+            coin.despawnPosition = 800;
+
 
         }
 
@@ -76,58 +92,68 @@ namespace Game10003
         /// </summary>
         public void Update()
         {
-            Window.ClearBackground(Color.OffWhite);
-            bob.lastPosition = bob.position;
+            if (!isCollidingWithProjectile())
+            {
+                Window.ClearBackground(Color.OffWhite);
+                bob.lastPosition = bob.position;
+                Text.Draw("Score: " + score, 0, 0);
 
-            //Calling functions
-            //Bob's functions
-            bob.PlayerControl();
-            bob.DrawBob();
-            bob.BobsGravity();
-            //Platform's functions
-            floor.DrawPlatforms();
-            platform.DrawPlatforms();
-            projectile.drawProjectiles();
-            //collision();
+                //Calling functions
+                //Bob's functions
+                bob.PlayerControl();
+                bob.DrawBob();
+                bob.BobsGravity();
+                //Platform's functions
+                floor.DrawPlatforms();
+                //Projectile's functions
+                projectile.drawProjectiles();
+                coin.drawProjectiles();
+                collision();
+
+                if (isCollidingWithCoin())
+                {
+                    score += 1;
+                    coin.position.X = 0;
+                    coin.position.Y = Random.Integer(200, 500);
+                    projectile.speed += 50;
+                    coin.speed += 50;
+                }
+
+            }
+
+            if (isCollidingWithProjectile())
+            {
+                Window.ClearBackground(Color.White);
+                Text.Draw("Game Over", 350, 350);
+
+            }
+
+
 
         }
 
         public void collision() 
-        {
-            bool isCollidingRight = bob.position.X - bob.size < platform.rightEdge;
-            bool isCollidingLeft = bob.position.X + bob.size > platform.rightEdge;
-            bool isCollidingTop = bob.position.Y + bob.size > platform.topEdge;
-            bool isCollidingBottom = bob.position.Y - bob.size < platform.bottomEdge;
-
-            bool isWithinYBottom = platform.bottomEdge < bob.position.Y + bob.size;
-            bool isWithinYTop = platform.topEdge > bob.position.Y - bob.size;
-            bool isWithinXLeft = platform.leftEdge < bob.position.X - bob.size;
-            bool isWithinXRight = platform.rightEdge > bob.position.X + bob.size;
-
-            
-
+        {  
             bool isCollidingWithFloor = bob.position.Y + bob.size > floor.topEdge;
-
-            if (isCollidingTop) 
-            {
-                bob.position.Y = bob.lastPosition.Y;
-                bob.velocity.Y = 0;
-            }
-
-            if (isCollidingTop&&isCollidingBottom)
-            {
-                bob.position.Y = bob.lastPosition.Y;
-                bob.velocity.Y = 0;
-            }
-
             if (isCollidingWithFloor)
             {
                 bob.velocity.Y = 0;
                 bob.position.Y = bob.lastPosition.Y;
             }
-
-
         }
 
+        public bool isCollidingWithProjectile()
+        {
+            float circlesRadiiP = bob.size + projectile.size;
+            bool doCirclesCollide = Vector2.Distance(bob.position, projectile.position) <= circlesRadiiP;
+            return doCirclesCollide;
+        }
+
+        public bool isCollidingWithCoin()
+        {
+            float circlesRadiiC = bob.size + coin.size;
+            bool doesCoinCollide = Vector2.Distance(bob.position, coin.position) <= circlesRadiiC;
+            return doesCoinCollide;
+        }
     }
 }
