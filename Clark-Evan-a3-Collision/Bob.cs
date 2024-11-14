@@ -17,7 +17,7 @@ namespace Clark_Evan_a3_Collision
         public float speed;
         //Gravity
         public Vector2 velocity;
-        public Vector2 gravity = new Vector2(0, +20);
+        public Vector2 gravity = new Vector2(0, +15);
         public Vector2 jumpHeight;
         public Vector2 gravityForce;
 

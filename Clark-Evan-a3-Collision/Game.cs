@@ -73,14 +73,14 @@ namespace Game10003
             projectile.position.X = 0;
             projectile.position.Y = Random.Integer(200, 500);
             projectile.size = 30;
-            projectile.speed = 600;
+            projectile.speed = 400;
             projectile.projectileColor = Color.Red;
             projectile.despawnPosition = 800;
             //Coin's variables
             coin.position.X = 0;
             coin.position.Y = Random.Integer(200, 500);
             coin.size = 30;
-            coin.speed = 600;
+            coin.speed = 400;
             coin.projectileColor = Color.Yellow;
             coin.despawnPosition = 800;
 
@@ -120,11 +120,16 @@ namespace Game10003
                 }
 
             }
-
+            //Game over happens
             if (isCollidingWithProjectile())
             {
                 Window.ClearBackground(Color.White);
-                Text.Draw("Game Over", 350, 350);
+                Text.Draw("Game Over!\n\nFinal score: "+score+"\n\nRestart: 'r' key", 300, 250);
+                if (Input.IsKeyboardKeyDown(KeyboardInput.R))
+                {
+                    score = 0;
+                    Setup();
+                }
 
             }
 
