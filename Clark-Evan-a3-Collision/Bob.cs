@@ -1,7 +1,6 @@
 ﻿
 using Game10003;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Clark_Evan_a3_Collision
 {
