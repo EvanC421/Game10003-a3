@@ -59,10 +59,15 @@ namespace Clark_Evan_a3_Collision
             {
                 position.X = Window.Width - size;
             }
+            //slam down controls
+            if (Input.IsKeyboardKeyDown(KeyboardInput.Down))
+            {
+                velocity.Y += 20;
+            }
             //player jumps (spacebar)
             //Only go up if Bob has zero verticle velocity, AKA when he's touching the ground
             if (velocity.Y == 0) {
-                if (Input.IsKeyboardKeyDown(KeyboardInput.Space))
+                if (Input.IsKeyboardKeyDown(KeyboardInput.Up))
                 {
                     velocity = velocity - jumpHeight;
                 }

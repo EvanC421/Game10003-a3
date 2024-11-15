@@ -37,7 +37,7 @@ namespace Game10003
             bob.size = 50;
             bob.bodyColor = purple;
             bob.eyeMouthColor = Color.Black;
-            bob.speed = 500;
+            bob.speed = 750;
             bob.jumpHeight.X = 0;
             bob.jumpHeight.Y = 12;
             bob.lastPosition.X = 0;
@@ -84,7 +84,6 @@ namespace Game10003
             coin.projectileColor = Color.Yellow;
             coin.despawnPosition = 800;
 
-
         }
 
         /// <summary>
@@ -130,13 +129,8 @@ namespace Game10003
                     score = 0;
                     Setup();
                 }
-
             }
-
-
-
         }
-
         public void collision() 
         {  
             bool isCollidingWithFloor = bob.position.Y + bob.size > floor.topEdge;
